@@ -13,7 +13,9 @@ import starter.bolt.WordCountBolt;
 public class WordCountTopology {
 
   private static TopologyBuilder defineTopology() {
+
     TopologyBuilder builder = new TopologyBuilder();
+
     builder.setSpout("sentence-spout", new RandomSentenceSpout(), 1);
 
     builder.setBolt("split-sentence", new SplitSentenceBolt())
@@ -21,7 +23,6 @@ public class WordCountTopology {
 
     builder.setBolt("word-count-bolt", new WordCountBolt())
         .shuffleGrouping("split-sentence");
-
 
     return builder;
   }
@@ -36,8 +37,8 @@ public class WordCountTopology {
   private static void startCluster(Config conf, TopologyBuilder builder) throws Exception{
     LocalCluster cluster = new LocalCluster();
     cluster.submitTopology("word-count", conf, builder.createTopology());
-    Thread.sleep(10000);
-    cluster.shutdown();
+    // Thread.sleep(10000);
+    // cluster.shutdown();
   }
 
   public static void main(String[] args) throws Exception {
